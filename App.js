@@ -53,6 +53,53 @@ function App1() {
   );
 }
 
+function App2() {
+  let [inputText, setInputText] = useState('');
+  let [rhymes, setRhymes] = useState([
+    {text: 'foo', key: 'foo'}, 
+    {text: 'too', key: 'too'}]);
+
+  const findRhymes = async () => {
+    const baseURI = 'https://api.datamuse.com/words?rel_rhy=';
+    const uri = baseURI + inputText;
+    let response = await fetch(uri); // blocks til fetch() resolves
+    let json = await response.json(); // blocks til response.json() resolves
+    let newRhymes = [];
+    for (let r of json) {
+      let newR = {text: r.word, key: r.word};
+      newRhymes.push(newR);
+    }
+    setRhymes(newRhymes);
+  }
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <TextInput
+          placeholder="Enter a word"
+          style={styles.input}
+          onChangeText={text=>setInputText(text)}
+        />
+        <TouchableOpacity
+          onPress={findRhymes}
+        >
+          <MaterialIcons name='search' size={24}/>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.body}>
+        <FlatList
+          data={rhymes}
+          renderItem={({item})=>{
+            return (
+              <Text>{item.text}</Text>
+            )
+          }}
+        />
+      </View>
+    </View>
+  );
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -86,6 +133,6 @@ const styles = StyleSheet.create({
   }
 });
 
-export default App1;
-//export default App2;
+//export default App1;
+export default App2;
 

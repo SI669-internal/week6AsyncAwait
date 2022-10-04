@@ -139,7 +139,7 @@ function App3() {
         onChangeText={text=>setInputText(text)}
         value={inputText}
       />
-        <TouchableOpacity onPress={()=>{console.log('TBD')}}>
+        <TouchableOpacity onPress={updateRhymePhrase}>
           <MaterialIcons name='search' size={24}/>
         </TouchableOpacity>
       </View>
